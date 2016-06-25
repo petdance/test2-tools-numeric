@@ -1,0 +1,10 @@
+Changes
+lib/Test2/Tools/Numeric.pm
+Makefile.PL
+MANIFEST
+t/TestUtils.pm
+t/00-load.t
+t/manifest.t
+t/numeric.t
+t/pod-coverage.t
+t/pod.t

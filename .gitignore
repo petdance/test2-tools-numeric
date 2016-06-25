@@ -13,8 +13,13 @@ Build.bat
 /META.yml
 /META.json
 /MYMETA.*
-nytprof.out
+nytprof*
 /pm_to_blib
 *.o
 *.bs
 /_eumm/
+pod2htm*.tmp
+
+Numeric.pm
+Test2-Tools-Numeric-*
+Test2-Tools-Numeric-*.tar.gz
