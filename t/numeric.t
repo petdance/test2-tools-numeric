@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use Carp::Always;
 
 use Test2::Bundle::Extended;
 plan 5;

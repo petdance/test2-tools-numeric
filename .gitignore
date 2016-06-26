@@ -20,6 +20,6 @@ nytprof*
 /_eumm/
 pod2htm*.tmp
 
-Numeric.pm
+/Numeric.pm
 Test2-Tools-Numeric-*
 Test2-Tools-Numeric-*.tar.gz
