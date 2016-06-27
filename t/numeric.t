@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use Carp::Always;
 
 use Test2::Bundle::Extended;
 plan 5;
@@ -13,7 +12,6 @@ use lib 't';
 use TestUtils;
 
 
-#    cmp_integer_ok
 #    is_even
 #    is_odd
 
