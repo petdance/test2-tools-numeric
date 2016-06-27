@@ -15,11 +15,12 @@ WriteMakefile(
         'ExtUtils::MakeMaker' => 0,
     },
     BUILD_REQUIRES => {
-        'Test::More' => 0,
+        'Test2::Bundle::Extended' => 0,
     },
     PREREQ_PM => {
-        #'ABC'              => 1.6,
-        #'Foo::Bar::Module' => 5.0401,
+        'Test2::API'                   => 0,
+        'Test2::Tools::Subtest'        => 0,
+        'Test2::Tools::ClassicCompare' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Test2-Tools-Numeric-*' },
