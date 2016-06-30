@@ -43,7 +43,7 @@ our @EXPORT = @EXPORT_OK;
     my @array = get_widgets();
     is_even( scalar @a, '@array must have an even number of widgets' );
 
-=head1 WHY TEST::EXPRESSIVE?
+=head1 WHY TEST2::TOOLS::NUMERIC?
 
 Test2::Tools::Numeric is designed to make your code more readable,
 based on the idea that reading English is easier and less prone to
@@ -73,9 +73,18 @@ want them to.
         ok( $x % 2 == 0 );
     }
 
+Here's another one that will pass, even though it's undoubtedly a mistake:
+
+    my %hash = ( foo => 1, bar => 2, bat => 3 );
+    cmp_ok( %hash, '>', 0 );
+
+Why does it pass?  Because the stringification of that hash is "3/8"
+and in a numeric context that becomes 3.
+
 Test2::Tools::Numeric is based on the idea that the reader should
 be able to tell as much from English as possible without having to
-decipher code.
+decipher code, and to have extra safety checks that you might not
+consider.
 
 =head1 EXPORT
 
