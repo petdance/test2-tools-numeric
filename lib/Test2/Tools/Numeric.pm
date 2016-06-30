@@ -92,7 +92,7 @@ All functions in this module are exported by default.
 
 =head1 NUMERIC SUBROUTINES
 
-=head1 is_number( $n [, $name ] )
+=head2 is_number( $n [, $name ] )
 
 Tests that C<$n> is what Perl considers to be a number.
 
