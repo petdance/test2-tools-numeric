@@ -1,5 +1,7 @@
 Revision history for Test2-Tools-Numeric
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.01_01 Wed Jun 29 22:36:37 CDT 2016
 
+First beta version released to the wild, mostly so it can be
+critiqued.  Don't rely on the messages from the testing subs because
+they will undoubtedly change in the near future.

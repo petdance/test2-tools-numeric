@@ -4,16 +4,13 @@ use strict;
 use warnings;
 
 use Test2::Bundle::Extended;
-plan 5;
+plan 7;
 
 use Test2::Tools::Numeric;
 
 use lib 't';
 use TestUtils;
 
-
-#    is_even
-#    is_odd
 
 
 subtest is_number => sub {
@@ -149,6 +146,61 @@ subtest cmp_integer_ok => sub {
 
     tests_pass_fail( \&cmp_integer_ok, \%passers, \%failers );
 };
+
+
+subtest is_even => sub {
+    my %passers = (
+        'zero'          => 0,
+        'two'           => 2,
+        'negative 2'    => -2,
+        'six million'   => 6_000_000,
+        'big exponent'  => 9E14,
+    );
+
+    my %failers = (
+        'one'               => 1,
+        'negative 1'        => -1,
+        'decimal'           => '1.',
+        'decimal.0'         => '1.0',
+        'noisy punctuation' => '=1',
+        'sign at the end'   => '1-',
+        'letters'           => 'abc',
+        'empty string'      => '',
+        'undef'             => undef,
+        'hashref'           => {},
+    );
+
+    tests_pass_fail( \&is_even, \%passers, \%failers );
+};
+
+
+subtest is_odd => sub {
+    my %passers = (
+        'one'              => 1,
+        'negative 1'       => -1,
+        'six million + 1'  => 6_000_000 + 1,
+        'big exponent + 1' => 9E14 + 1,
+    );
+
+    my %failers = (
+        'zero'              => 0,
+        'two'               => 2,
+        'negative 2'        => -2,
+        'six million'       => 6_000_000,
+        'big exponent'      => 9E14,
+        'decimal'           => '1.',
+        'decimal.0'         => '1.0',
+        'noisy punctuation' => '=1',
+        'sign at the end'   => '1-',
+        'letters'           => 'abc',
+        'empty string'      => '',
+        'undef'             => undef,
+        'hashref'           => {},
+    );
+
+    tests_pass_fail( \&is_odd, \%passers, \%failers );
+};
+
 
 done_testing();
 

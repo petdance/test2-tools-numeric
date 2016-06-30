@@ -16,11 +16,11 @@ Test2::Tools::Numeric - Test functions for common numeric tests
 
 =head1 VERSION
 
-Version 0.01
+Version 0.01_01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.01_01';
 
 use base 'Exporter';
 
@@ -60,20 +60,21 @@ It's a common expression that most programmers can easily identify.
 Most any programmer will see that and think "Aha, it's testing to
 see if it's an even number."
 
-Better still to make it explicitly clear, in English, what you're trying
-to accomplish:
+Better still to make it explicitly clear, in English, what you're
+trying to accomplish:
 
     is_even( $x );
 
-Test2::Tools::Numeric also does more stringent checking than the common quick
-tests that we put in.  These tests will all pass.  You probably don't
-want them to.
+Test2::Tools::Numeric also does more stringent checking than the
+common quick tests that we put in.  These tests will all pass.  You
+probably don't want them to.
 
     for my $x ( undef, 'foo', {}, [] ) {
         ok( $x % 2 == 0 );
     }
 
-Here's another one that will pass, even though it's undoubtedly a mistake:
+Here's another one that will pass, albeit with warnings, even though
+it's undoubtedly a mistake:
 
     my %hash = ( foo => 1, bar => 2, bat => 3 );
     cmp_ok( %hash, '>', 0 );
@@ -143,15 +144,15 @@ sub is_integer($;$) {
     my $name = shift // '';
 
     return subtest_buffered "is_integer( $name )" => sub {
-        my $context = context();
+        my $ctx = context();
 
         my $ok = is_number( $n, 'is_integer needs a number' );
         if ( $ok ) {
             $ok = ($n =~ /^[-+]?\d+(?:E\d+)?$/);
-            $context->ok( $ok, "is_integer( $n, $name )" );
+            $ctx->ok( $ok, "is_integer( $n, $name )" );
         }
 
-        $context->release();
+        $ctx->release();
     };
 }
 
@@ -212,6 +213,8 @@ sub cmp_integer_ok($$$;$) {
 
 =head2 is_positive_integer( $n [, $name ] )
 
+Verifies that C<$n> is an integer, and greater than zero.
+
 =cut
 
 sub is_positive_integer($;$) {
@@ -223,6 +226,8 @@ sub is_positive_integer($;$) {
 
 
 =head2 is_nonnegative_integer( $n [, $name ] )
+
+Verifies that C<$n> is an integer, and greater than or equal to zero.
 
 =cut
 
@@ -236,34 +241,43 @@ sub is_nonnegative_integer($;$) {
 
 =head2 is_even( $n [, $name ] )
 
-Checks whether the number C<$n> is a nonnegative integer and is even or zero.
+Checks whether the number C<$n> is an integer and is divisible by two.
 
 =cut
 
 sub is_even($;$) {
-    my $n   = shift;
-    my $name = shift;
+    my $n    = shift;
+    my $name = shift // '';
 
     return subtest_buffered "is_even( $name )" => sub {
-        is_nonnegative_integer( $n )
-            && ok( $n % 2 == 0, 'Is it divisible by two?' );
+        my $ctx = context();
+        my $ok = is_integer( $n );
+        if ( $ok ) {
+            $ctx->ok( $n % 2 == 0, 'Is it divisible by two?' );
+        }
+
+        $ctx->release;
     };
 }
 
 
 =head2 is_odd( $n [, $name ] )
 
-Checks whether the number C<$n> is a nonnegative integer and is odd.
+Checks whether the number C<$n> is an integer and is not divisible by two.
 
 =cut
 
 sub is_odd($;$) {
-    my $n   = shift;
-    my $name = shift;
+    my $n    = shift;
+    my $name = shift // '';
 
     return subtest_buffered "is_odd( $name )" => sub {
-        is_nonnegative_integer( $n )
-            && ok( $n % 2 == 0, 'Is it divisible by two?' );
+        my $ok = is_integer( $n );
+        if ( $ok ) {
+            my $ctx = context();
+            $ctx->ok( $n % 2 == 1, 'Is it NOT divisible by two?' );
+            $ctx->release();
+        }
     };
 }
 
@@ -275,7 +289,7 @@ Andy Lester, C<< <andy at petdance.com> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to
-C<bug-test-expressive at rt.cpan.org>,
+C<bug-test2-tools-numeric at rt.cpan.org>,
 or through the web interface at
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Test2-Tools-Numeric>.
 I will be notified, and then you'll automatically be notified of
@@ -291,6 +305,14 @@ You can also look for information at:
 
 =over 4
 
+=item * MetaCPAN
+
+L<http://metacpan.org/release/Test2-Tools-Numeric/>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Test2-Tools-Numeric/>
+
 =item * RT: CPAN's request tracker (report bugs here)
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test2-Tools-Numeric>
@@ -302,10 +324,6 @@ L<http://annocpan.org/dist/Test2-Tools-Numeric>
 =item * CPAN Ratings
 
 L<http://cpanratings.perl.org/d/Test2-Tools-Numeric>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Test2-Tools-Numeric/>
 
 =back
 
