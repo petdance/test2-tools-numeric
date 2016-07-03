@@ -46,11 +46,11 @@ our @EXPORT = @EXPORT_OK;
 =head1 WHY TEST2::TOOLS::NUMERIC?
 
 Test2::Tools::Numeric is designed to make your code more readable,
-based on the idea that reading English is easier and less prone to
+because reading English is easier and less prone to
 misinterpretation than reading Perl, and less prone to error by
 reducing common cut & paste tasks.
 
-Conside either of these two tests:
+Conside these two tests:
 
     ok( $x % 2 == 0 );
     is( $x % 2, 0 );
@@ -105,8 +105,6 @@ sub is_number($;$) {
 
     my $ctx = context();
 
-    my $n_desc = $n // 'undef';
-
     my $ok = looks_like_number( $n );
     $ctx->ok( $ok, $name );
     $ctx->release();
@@ -141,19 +139,20 @@ The following are not:
 
 sub is_integer($;$) {
     my $n    = shift;
-    my $name = shift // '';
+    my $name = shift;
 
-    return subtest_buffered "is_integer( $name )" => sub {
-        my $ctx = context();
-
-        my $ok = is_number( $n, 'is_integer needs a number' );
+    my $ctx = context();
+    my $ok = subtest_buffered $name => sub {
+        my $ok = is_number( $n, 'is_integer: Is it a number?' );
         if ( $ok ) {
             $ok = ($n =~ /^[-+]?\d+(?:E\d+)?$/);
-            $ctx->ok( $ok, "is_integer( $n, $name )" );
+            $ctx->ok( $ok, 'is_integer: Looks like an integer?' );
         }
 
-        $ctx->release();
     };
+    $ctx->release();
+
+    return $ok;
 }
 
 
@@ -329,7 +328,8 @@ L<http://cpanratings.perl.org/d/Test2-Tools-Numeric>
 
 =head1 ACKNOWLEDGEMENTS
 
-None yet.
+Some ideas for tests came from Edmund von der Burg's
+L<http://search.cpan.org/dist/Test-Numeric/ Test::Numeric>.
 
 =head1 LICENSE AND COPYRIGHT
 
