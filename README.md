@@ -1,5 +1,7 @@
 # Test2::Tools::Numeric
 
+[![Build Status](https://travis-ci.org/petdance/test2-tools-numeric.svg?branch=dev)](https://travis-ci.org/petdance/test2-tools-numeric)
+
 Test2::Tools::Numeric, a set of helper functions to make Perl tests easier to read
 
 # INSTALLATION
