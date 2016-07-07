@@ -1,13 +1,15 @@
 #!perl -T
+
 use 5.008001;
 use strict;
 use warnings;
-use Test::More;
 
-plan tests => 1;
+use Test2::Tools::Numeric;
 
-BEGIN {
-    use_ok( 'Test2::Tools::Numeric' ) || print "Bail out!\n";
-}
+use Test2::Bundle::More;
+use Test2;
 
-diag( "Testing Test2::Tools::Numeric $Test2::Tools::Numeric::VERSION, Perl $], $^X" );
+plan 1;
+
+
+diag( "Testing Test2::Tools::Numeric $Test2::Tools::Numeric::VERSION with Test2 $Test2::VERSION, Perl $], $^X" );
