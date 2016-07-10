@@ -4,34 +4,41 @@ use strict;
 use warnings;
 
 use Test2::Bundle::Extended;
-plan 1;
+plan 4;
 
 use Test2::Tools::Numeric;
 
 use lib 't';
 use TestUtils;
 
+imported_ok( 'is_number' );
 
-my @tests = (
-    [ 0, 'xxx' ] => array {
-        event Ok => { pass => 1 }
+
+like(
+    intercept { is_number( undef, 'failer' ) },
+    array {
+        fail_events Ok => { pass => 0 };
+        end;
     },
-
-    #[ 0, 'Flurgle' ] => array {
-    #    event Ok => {
-    #        pass => 1,
-    #        name => 'Flurgle',
-    #    },
-    #},
+    'undef should fail'
 );
 
+like(
+    intercept { is_number( 14 ) },
+    array {
+        event Ok => { pass => 1 };
+    },
+    '14 should pass'
+);
 
-while ( my ( $args, $expected ) = splice( @tests, 0, 2 ) ) {
-    my $args_desc = join( ', ', @{$args} );
-    my $desc = "is_number( $args_desc )";
-    my $events = intercept { is_number( @{$args} ) };
-    is( $events, $expected, $desc );
-}
+like(
+    intercept { is_number( 'xxx', 'Manual xxx' ) },
+    array {
+        fail_events Ok => { pass => 0 };
+        end;
+    },
+    'xxx should fail'
+);
 
 
 done_testing();
