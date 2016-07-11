@@ -14,28 +14,43 @@ use TestUtils;
 imported_ok( 'is_number' );
 
 
-like(
-    intercept { is_number( undef, 'failer' ) },
+my $LINE = __LINE__ + 2;
+is(
+    intercept { is_number( undef, 'undef is not a number' ) },
     array {
-        fail_events Ok => { pass => 0 };
-        end;
+        fail_events Ok => sub {
+            call pass => 0;
+            call name => 'undef is not a number';
+            prop line => $LINE;
+            prop file => __FILE__;
+        }
     },
     'undef should fail'
 );
 
-like(
+$LINE = __LINE__ + 2;
+is(
     intercept { is_number( 14 ) },
     array {
-        event Ok => { pass => 1 };
+        event Ok => sub {
+            call name => undef;
+            prop line => $LINE;
+            prop file => __FILE__;
+        }
     },
     '14 should pass'
 );
 
-like(
+$LINE = __LINE__ + 2;
+is(
     intercept { is_number( 'xxx', 'Manual xxx' ) },
     array {
-        fail_events Ok => { pass => 0 };
-        end;
+        fail_events Ok => sub {
+            call pass => 0;
+            call name => 'Manual xxx';
+            prop line => $LINE;
+            prop file => __FILE__;
+        }
     },
     'xxx should fail'
 );
