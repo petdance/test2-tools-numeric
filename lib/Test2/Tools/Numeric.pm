@@ -103,10 +103,18 @@ sub is_number($;$) {
     my $n    = shift;
     my $name = shift;
 
+    my $ok;
     my $ctx = context();
 
-    my $ok = looks_like_number( $n );
-    $ctx->ok( $ok, $name );
+    if ( defined $n ) {
+        $ok = looks_like_number( $n );
+        $ctx->ok( $ok, $name );
+    }
+    else {
+        $ok = $ctx->ok( 0, $name );
+        $ctx->diag( 'undef is not a number' );
+    }
+
     $ctx->release();
 
     return $ok;

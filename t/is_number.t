@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Test2::Bundle::Extended;
-plan 4;
+plan 3;
 
 use Test2::Tools::Numeric;
 
@@ -13,46 +13,27 @@ use TestUtils;
 
 imported_ok( 'is_number' );
 
-
-my $LINE = __LINE__ + 2;
-is(
-    intercept { is_number( undef, 'undef is not a number' ) },
-    array {
-        fail_events Ok => sub {
-            call pass => 0;
-            call name => 'undef is not a number';
-            prop line => $LINE;
-            prop file => __FILE__;
-        }
-    },
-    'undef should fail'
+simple_sub_tester( 'is_number', \&is_number, 1, {
+        'zero'           => 0,
+        'one'            => 1,
+        'negative one'   => -1,
+        'two point'      => 2.,
+        'two point zero' => 2.0,
+        '0E0'            => 0E0,
+        'sqrt(2)'        => sqrt(2),
+        'six million'    => 6_000_000,
+    }
 );
 
-$LINE = __LINE__ + 2;
-is(
-    intercept { is_number( 14 ) },
-    array {
-        event Ok => sub {
-            call name => undef;
-            prop line => $LINE;
-            prop file => __FILE__;
-        }
-    },
-    '14 should pass'
-);
-
-$LINE = __LINE__ + 2;
-is(
-    intercept { is_number( 'xxx', 'Manual xxx' ) },
-    array {
-        fail_events Ok => sub {
-            call pass => 0;
-            call name => 'Manual xxx';
-            prop line => $LINE;
-            prop file => __FILE__;
-        }
-    },
-    'xxx should fail'
+simple_sub_tester( 'is_number', \&is_number, 0, {
+        'noisy punctuation' => '=1',
+        'sign at the end'   => '1-',
+        'letters'           => 'abc',
+        'empty string'      => '',
+        'undef'             => undef,
+        'arrayref'          => [],
+        'hashref'           => {},
+    }
 );
 
 
