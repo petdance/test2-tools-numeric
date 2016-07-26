@@ -4,6 +4,7 @@ Makefile.PL
 MANIFEST
 t/TestUtils.pm
 t/00-load.t
+t/is_integer.t
 t/is_number.t
 t/numeric.t
 t/pod-coverage.t

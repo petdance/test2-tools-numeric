@@ -149,15 +149,10 @@ sub is_integer($;$) {
     my $n    = shift;
     my $name = shift;
 
-    my $ctx = context();
-    my $ok = subtest_buffered $name => sub {
-        my $ok = is_number( $n, 'is_integer: Is it a number?' );
-        if ( $ok ) {
-            $ok = ($n =~ /^[-+]?\d+(?:E\d+)?$/);
-            $ctx->ok( $ok, 'is_integer: Looks like an integer?' );
-        }
+    my $ok = looks_like_number( $n ) && ($n =~ /^[-+]?\d+(?:E\d+)?$/);
 
-    };
+    my $ctx = context();
+    $ctx->ok( $ok, $name );
     $ctx->release();
 
     return $ok;
