@@ -149,7 +149,7 @@ sub is_integer($;$) {
     my $n    = shift;
     my $name = shift;
 
-    my $ok = looks_like_number( $n ) && ($n =~ /^[-+]?\d+(?:E\d+)?$/);
+    my $ok = _looks_like_integer( $n );
 
     my $ctx = context();
     $ctx->ok( $ok, $name );
@@ -194,22 +194,31 @@ sub cmp_integer_ok($$$;$) {
     my $expected = shift;
     my $name     = shift // '';
 
-    return subtest_buffered "cmp_integer_ok( $name )" => sub {
-        my $ctx = context();
+    my @diags;
+    if ( !_looks_like_integer( $got ) ) {
+        push( @diags, _stringify($got) . ' is not an integer' );
+    }
 
-        my $ok = $valid_integer_op{ $op };
-        $ctx->ok( $ok, "$op is a valid integer operator" );
+    if ( !$valid_integer_op{ $op } ) {
+        push( @diags, _stringify($op) . ' is not a valid integer operator' );
+    }
 
-        if ( $ok ) {
-            is_integer( $got )
-                and
-            is_integer( $expected )
-                and
-            cmp_ok( $got, $op, $expected );
-        }
+    if ( !_looks_like_integer( $expected ) ) {
+        push( @diags, _stringify($expected) . ' is not an integer' );
+    }
 
-        $ctx->release();
-    };
+    my $ok;
+
+    my $ctx = context();
+    if ( @diags ) {
+        $ok = $ctx->ok( !@diags, $name, \@diags );
+    }
+    else {
+        $ok = cmp_ok( $got, $op, $expected, $name );
+    }
+    $ctx->release;
+
+    return $ok;
 }
 
 
@@ -282,6 +291,21 @@ sub is_odd($;$) {
         }
     };
 }
+
+
+sub _looks_like_integer {
+    my $n = shift;
+
+    return looks_like_number( $n ) && ($n =~ /^[-+]?\d+(?:E\d+)?$/);
+}
+
+
+sub _stringify {
+    my $x = shift;
+
+    return defined($x) ? qq{"$x"} : 'undef';
+}
+
 
 
 =head1 AUTHOR
