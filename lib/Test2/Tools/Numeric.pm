@@ -192,11 +192,11 @@ sub cmp_integer_ok($$$;$) {
     my $got      = shift;
     my $op       = shift;
     my $expected = shift;
-    my $name     = shift // '';
+    my $name     = shift;
 
     my @diags;
     if ( !_looks_like_integer( $got ) ) {
-        push( @diags, _stringify($got) . ' is not an integer' );
+        push( @diags, 'Left-hand operand ' . _stringify($got) . ' is not an integer' );
     }
 
     if ( !$valid_integer_op{ $op } ) {
@@ -204,7 +204,7 @@ sub cmp_integer_ok($$$;$) {
     }
 
     if ( !_looks_like_integer( $expected ) ) {
-        push( @diags, _stringify($expected) . ' is not an integer' );
+        push( @diags, 'Right-hand operand ' . _stringify($expected) . ' is not an integer' );
     }
 
     my $ok;
