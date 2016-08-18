@@ -4,6 +4,7 @@ Makefile.PL
 MANIFEST
 t/TestUtils.pm
 t/00-load.t
+t/cmp_integer_ok.t
 t/is_integer.t
 t/is_number.t
 t/numeric.t
