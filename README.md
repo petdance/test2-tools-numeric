@@ -1,6 +1,6 @@
 # Test2::Tools::Numeric
 
-* Travis: [![Build Status](https://travis-ci.org/petdance/test2-tools-numeric.svg?branch=dev)](https://travis-ci.org/petdance/test-www-mechanize)
+* Travis: [![Build Status](https://travis-ci.org/petdance/test2-tools-numeric.svg?branch=dev)](https://travis-ci.org/petdance/test2-tools-numeric)
 * cpantesters.org:
 [summary](http://www.cpantesters.org/distro/T/Test2-Tools-Numeric.html) and
 [dev FAILs](http://www.cpantesters.org/distro/T/Test2-Tools-Numeric.html?grade=3&perlmat=2&patches=2&oncpan=2&distmat=3&perlver=ALL&osname=ALL)
